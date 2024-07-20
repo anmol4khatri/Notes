@@ -1,151 +1,99 @@
-# Express js
+# MongoDB / Mongoose
 
-# Creating an HTTP Server with Express.js
+# How To Connect to MongoDB Server
 
-## Setting Up
-
-1. **Install Express.js:**
-    
-    ```bash
-    npm install express
-    
-    ```
-    
-2. **Import Express:**
-    
-    ```jsx
-    import express from "express";
-    
-    ```
-    
-
-## Creating a Basic HTTP Server
-
-### Step 1: Initialize Express App
+### Method : 1
 
 ```jsx
-import express from "express";
+//npm install mongoose 
 
-const app = express();
+//require mongoose module
+const mongoose = require(mongoose);
 
+//Define the MongoDB connection URL
+const mongoURL = 'mongodb://localhost:27017/mydatabaseName'
+//Recplace the mydatabaseName with name of your database
+
+//Set up MongoDB connection
+mongoose.connect(mongoURL, {
+    useNewUrlParser: true,
+    useUnfiedTopology: true
+});
+
+//Get the deafult connection
+//MongoDB maintains a deafult connection object representing the MongoDB connection
+const db= mongoose.connection;
+
+// Define event listeners for database connection
+db.on('connected', () => {
+    console.log("Connected to MongoDb server");
+});
+
+db.om('error', (err) => {
+    console.error("MongoDB connection error : ",err);
+});
+
+db.on('disconnected', () => {
+    console.log("MongoDB disconnected");
+});
+
+//Export the database connection
+module.exports = db;
+//or
+export default db; 
 ```
 
-### Step 2: Define Routes
-
-### Plain Text Response
+### Method : 2
 
 ```jsx
-app.get("/", (req, res) => {
-    res.send("Hi");
-});
+import mangoose from "mangoose";
 
+mangoose.connect("mongodb://localhost:27017/", {
+    dbName: "backend" //name of the database
+}).then(() => console.log("Database Connected")).catch((e) => console.log(e));
+
+export default db;
 ```
 
-### Error Response
+# How to Create Schema
 
 ```jsx
-app.get("/nice", (req, res) => {
-    res.status(500).send("Something went wrong!");
+import { Schema, model } from 'mongoose';
+
+//Define the Person Schema
+const personSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    age: {
+        type: Number
+    },
+    work: {
+        type: String,
+        enum: ['chef', 'waiter', 'manager'],
+        required: true
+    },
+    mobile: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    salary: {
+        type: Number,
+        required: true
+    }
 });
 
+//Create Person model
+const Person = model('Person', personSchema);
+modeule.exports = Person;
 ```
-
-### Step 3: Start the Server
-
-```jsx
-app.listen(5000, () => {
-    console.log("Server is working at port 5000");
-});
-
-```
-
-### Full Code
-
-```jsx
-import express from "express";
-
-const app = express();
-
-app.get("/", (req, res) => {
-    res.send("Hi");
-});
-
-app.get("/nice", (req, res) => {
-    res.status(500).send("Something went wrong!");
-});
-
-app.listen(5000, () => {
-    console.log("Server is working at port 5000");
-});
-
-```
-
-## Sending JSON Data
-
-```jsx
-import express from "express";
-
-const app = express();
-
-app.get("/products", (req, res) => {
-    res.json({
-        success: true,
-        products: [],
-    });
-});
-
-app.listen(5000, () => {
-    console.log("Server is working at port 5000");
-});
-
-```
-
-## Serving Static HTML Files
-
-### for `“type": "module",`
-
-```jsx
-import express from "express"
-import path from "path"
-
-const app = express();
-
-app.get("/products", (req,res) => {
-    const pathlocation = path.resolve();
-    res.sendFile(path.join(pathlocation, "./index.html"));
-});
-
-app.listen(5000, () => {
-    console.log("Server is working at port 5000");
-});
-
-```
-
-### for `“type”: "commonjs",`
-
-```jsx
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const app = express();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-app.get("/products", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-
-app.listen(5000, () => {
-    console.log("Server is working at port 5000");
-});
-
-```
-
-**Challenge:**
-Serving static HTML pages in Express.js is straightforward, but it becomes complex when we need to render dynamic, variable-based HTML.
-
-**Solution:**
-EJS (Embedded JavaScript) is a package built on top of Express.js that addresses this challenge.
-It allows us to render dynamic HTML pages with embedded JavaScript variables, making it easier to create flexible and data-driven web pages.
