@@ -64,3 +64,11 @@ app.use((err,req,res,next) => {
     res.status(500).send('Something broke!');
 });
 ```
+
+# Dynamic Routing
+
+```jsx
+app.get("/profile/:username/:age", (req, res) => {
+    res.send(`You requested the profile of ${req.params.username} who is ${req.params.age} years old`);
+});
+```
