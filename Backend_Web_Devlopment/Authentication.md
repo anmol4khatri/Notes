@@ -1,8 +1,8 @@
 Authentication is a critical part of any web application, ensuring that only authorized users can access certain resources. This involves the use of cookies, password hashing (with bcrypt), and JSON Web Tokens (JWT). Here's a detailed overview with corresponding code examples in Node.js:
-### 1. What are Cookies?
+# What are Cookies?
 Cookies are small pieces of data stored on the client-side (in the browser) that are sent to the server with each request. They are used for various purposes, including session management, user tracking, and storing user preferences.
 
-### 2. How to Send a Cookie in Express
+# How to Send a Cookie in Express
 
 To send a cookie in Express, you can use the `res.cookie` method. Here's an example:
 
@@ -23,7 +23,7 @@ app.listen(3000, () => {
 });
 ```
 
-### 3. Nature of Cookies
+# Nature of Cookies
 
 Cookies created on any route will be sent with every subsequent request to the server. This behavior allows the server to access the cookies regardless of the endpoint being requested.
 
@@ -34,14 +34,14 @@ app.get('/read-cookie', (req, res) => {
 });
 ```
 
-### 4. Why Cookies are Used
+# Why Cookies are Used
 
 Cookies are primarily used to maintain stateful information between requests. This includes:
 - Storing session identifiers to keep users logged in.
 - Storing user preferences and settings.
 - Tracking user activity for analytics.
 
-### 5. Bcrypt for Password Hashing
+# Bcrypt for Password Hashing
 
 Storing plain text passwords is insecure. Bcrypt is a library that helps securely hash passwords before storing them in the database. Hashing converts the password into a fixed-size string that is not reversible, enhancing security.
 
@@ -54,7 +54,7 @@ Hashing: The plaintext password is combined with the salt and hashed multiple ti
 Verification: When a user logs in, the entered password is hashed with the stored salt and compared to the stored hash. If they match, the password is correct.
 
 
-#### Hashing a Password
+### Hashing a Password
 
 ```javascript
 const bcrypt = require('bcrypt');
@@ -72,7 +72,7 @@ app.get('/hash-password', (req, res) => {
 });
 ```
 
-#### Checking a Password
+### Checking a Password
 
 ```javascript
 const hashedPassword = '$2b$10$...'; // Example hashed password
@@ -85,11 +85,11 @@ app.get('/check-password', (req, res) => {
 });
 ```
 
-### 6. JWT (JSON Web Token)
+# JWT (JSON Web Token)
 
 JWT is a compact, URL-safe means of representing claims to be transferred between two parties. It consists of three parts: Header, Payload, and Signature.
 
-#### Generating a JWT
+### Generating a JWT
 
 ```javascript
 app.get('/generate-token', (req, res) => {
@@ -99,7 +99,7 @@ app.get('/generate-token', (req, res) => {
 });
 ```
 
-#### Verifying a JWT
+### Verifying a JWT
 
 ```javascript
 app.get('/verify-token', (req, res) => {
@@ -115,7 +115,7 @@ app.get('/verify-token', (req, res) => {
 });
 ```
 
-### Summary
+## Summary
 
 - **Cookies** are used to store session data on the client-side and are sent with every request to the server.
 - **Bcrypt** is used to hash passwords securely before storing them in the database.
